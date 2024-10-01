@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Style for the entire page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container for the registration form */
+        .register-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        /* Registration form styling */
+        .register-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Title styling */
+        .register-form h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Input group styling */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        /* Button styling */
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Aligning the form to the center */
+        .register-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-container">
+        <form class="register-form" id="registerForm">
+            <h2>Register</h2>
+            <div class="input-group">
+                <label for="regUsername">Username</label>
+                <input type="text" id="regUsername" name="regUsername" required>
+            </div>
+            <div class="input-group">
+                <label for="regPassword">Password</label>
+                <input type="password" id="regPassword" name="regPassword" required>
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const regUsername = document.getElementById('regUsername').value;
+            const regPassword = document.getElementById('regPassword').value;
+
+            try {
+                const response = await fetch('http://localhost:8000/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: regUsername, password: regPassword }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Registration failed');
+                }
+
+                // Show success message
+                alert('New member registered successfully!');
+                // Optionally, clear the registration form
+                document.getElementById('registerForm').reset();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Registration failed: ' + error.message);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
